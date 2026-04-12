@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.geojson
+.git/
+README.md
