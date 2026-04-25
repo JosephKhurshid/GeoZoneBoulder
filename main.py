@@ -3,10 +3,13 @@ from pydantic import BaseModel
 import redis.asyncio as redis
 import json
 import asyncpg
+import os
 
 app = FastAPI(title="GeoZone Boulder API", description="Automated Boulder Zoning Service")
 
-redis_client = redis.Redis.from_url("redis://redis:6379/0", decode_responses=True)
+# redis_client = redis.Redis.from_url("redis://redis:6379/0", decode_responses=True)#local
+REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")#cloud
+redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)#cloud
 
 class ZoningResponse(BaseModel):
     address: str
@@ -16,7 +19,9 @@ class ZoningResponse(BaseModel):
     source: str 
 
 async def query_postgis_zoning(address: str):
-    conn = await asyncpg.connect("postgresql://postgres:projectDTCGeography@db:5432/geozone")
+    # conn = await asyncpg.connect("postgresql://postgres:projectDTCGeography@db:5432/geozone")#local
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:projectDTCGeography@db:5432/geozone") #cloud
+    conn = await asyncpg.connect(DATABASE_URL)#cloud
     
     try:
         query = """

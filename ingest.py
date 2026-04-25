@@ -2,7 +2,8 @@ import geopandas as gpd
 from sqlalchemy import create_engine
 import time
 
-DATABASE_URL = "postgresql+psycopg2://postgres:projectDTCGeography@db:5432/geozone"#psycogpg2 neede due to non string/numbers in geo data
+DATABASE_URL = "postgresql+psycopg2://postgres:projectDTCGeography@db:5432/geozone"#psycogpg2 neede due to non string/numbers in geo data#local
+# DATABASE_URL = "postgresql+psycopg2://postgres:projectDTCGeography@35.193.138.80:5432/geozone"#cloud
 engine = create_engine(DATABASE_URL)
 
 def ingest_data():

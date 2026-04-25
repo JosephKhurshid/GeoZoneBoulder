@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geozone-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geozone-api
+  template:
+    metadata:
+      labels:
+        app: geozone-api
+    spec:
+      containers:
+      - name: api
+        image: us-central1-docker.pkg.dev/lab2-484821/geozone-repo/geozone-api:v1
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: geozone-secrets
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: geozone-secrets
+              key: REDIS_URL
